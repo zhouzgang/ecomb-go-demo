@@ -1,15 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	channel := make(chan string, 2)
-	go func() {
-		channel <- "hello"
-		channel <- "world"
-	}()
+	ticker := time.NewTicker(time.Second)
 
-	msg1 := <- channel
-	msg2 := <- channel
-	fmt.Println(msg1, msg2)
+	go func() {
+		for t := range ticker.C {
+			fmt.Println(t)
+		}
+	}()
+	timer := time.NewTimer(10 * time.Second)
+	<- timer.C
+	ticker.Stop()
+	fmt.Println("timer expired!")
 }

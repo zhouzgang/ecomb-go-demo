@@ -3,25 +3,34 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"runtime"
+	"sync"
 	"time"
 )
 
-func routine(name string, delay time.Duration) {
-	t0 := time.Now()
-	fmt.Println(name, " start at ", t0)
-	time.Sleep(delay)
-	t1 := time.Now()
-	fmt.Println(name, " end at ", t1)
-	fmt.Println(name, " lasted ", t1.Sub(t0))
+var totalTickets int32 = 10
+var mutex = &sync.Mutex{}
+
+func sellTickets(i int) {
+	for totalTickets > 0 {
+		mutex.Lock()
+		if totalTickets > 0 {
+			time.Sleep(time.Duration(rand.Intn(50)) * time.Microsecond)
+			totalTickets--
+			fmt.Println("id:", i, "tickets: ", totalTickets)
+		}
+		mutex.Unlock()
+	}
 }
 
 func main() {
+	runtime.GOMAXPROCS(4)
 	rand.Seed(time.Now().Unix())
-	var name string
-	for i := 0; i < 3; i++ {
-		name = fmt.Sprintf("go_%02d", i)
-		go routine(name, time.Duration(rand.Intn(5)) * time.Second)
+
+	for i := 0; i < 5; i++ {
+		go sellTickets(i)
 	}
+
 	var input string
 	fmt.Scanln(&input)
 	fmt.Println("done")
