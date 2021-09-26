@@ -2,6 +2,8 @@ package di
 
 import (
 	"ecomb-go-demo/web/cfg"
+	"github.com/rs/zerolog/log"
+	"gorm.io/gorm"
 	"sync"
 )
 
@@ -43,11 +45,28 @@ func (di *Container) Get(key interface{}) interface{} {
 }
 
 func (di *Container) Init() {
-	if err := di.
+	if err := di.OpenDBs(); err != nil {
+		log.Fatal().Msg("fail to init DI, due to DB error")
+	}
 }
 
 func (di *Container) OpenDBs() error  {
 	for k, v := range cfg.C.DB {
 		db, err := OpenDB(v)
+		if err != nil {
+			return err
+		}
+		di.Bind(KeyDB + k, db)
 	}
+	return nil
+}
+
+func (di *Container) DB(dbname string) *gorm.DB  {
+	db := di.Get(KeyDB + dbname)
+	if db == nil {
+		log.Error().Msgf("db %s id nil", dbname)
+		return nil
+	}
+	// todo 这里的写法没搞明白
+	return db.(*gorm.DB)
 }

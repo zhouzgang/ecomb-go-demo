@@ -1,0 +1,13 @@
+application:
+  test: hello
+
+database:
+  user:
+    host: 127.0.0.1
+    port: 3306
+    username: root
+    password: root
+    database: ecomb
+    max_idle_conns: 1
+    max_open_conns: 4
+    conn_max_life_time: 60s

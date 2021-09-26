@@ -1,0 +1,10 @@
+env: local
+mode: debug
+port: 8000
+timezone: Asia/Hong_Kong
+i18n: "./dist/i18n"
+locales: ["en", "zh"]
+drive: file
+file:
+  path: "./dist/cfg"
+  name: "config"
