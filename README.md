@@ -1,4 +1,4 @@
-## Go语言学习笔记
+# Go语言学习笔记
 
 ### 做什么
 - 熟悉 Go 基础语法
@@ -7,6 +7,7 @@
 - 了解 Go 常见性能问题和优化方式
 
 ### todo
+0. golang 的底层原理
 1. 熟悉 GORM 框架，操作一遍数据库
 2. 熟悉使用 Viper，处理好配置
 
@@ -77,6 +78,8 @@ go mod verify      # 校验依赖
 go mod why         # 解释为什么需要依赖
 ```
 
+### 通过问题理解
+- [Golang 常见面试题](http://wearygods.online/articles/2021/04/19/1618823886966.html)
 
 
 ## web 相关知识学习记录
